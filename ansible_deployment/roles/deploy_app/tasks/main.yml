@@ -1,0 +1,15 @@
+---
+# tasks file for deploy_app
+
+- name: Copy application war file to remote app server and keep a backup on existing
+  copy:
+    src: ../../../../assets/devopschallenge.war
+    dest: /opt/tomcat-current/webapps/devopschallenge.war
+    owner: tomcat
+    group: tomcat
+    mode: 0644
+    backup: yes
+    force: yes
+
+- name: Restart Tomcat service 
+  systemd: state=restarted name=tomcat.service

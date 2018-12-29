@@ -1,0 +1,9 @@
+---
+- hosts: appservers
+  remote_user: cloud_user
+  become_user: root
+  become_method: sudo
+  become: yes 
+  roles:
+    - install_tomcat
+    - deploy_app
