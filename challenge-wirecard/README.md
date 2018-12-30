@@ -1,5 +1,9 @@
-# Wirecard Configuration Management Challenge
-Use this file to create your deployment documentation with the complete instructions.
+# Ansible Deployments
+This is the how to guide for deploying devopschallenge.war in a Tomcat container with a Nginx reverse proxy with self signed SSL.
 
-Thank you,
-The Wirecard Recruiting Team
+## Introduction
+They are 3 roles define here.
+
+
+
+

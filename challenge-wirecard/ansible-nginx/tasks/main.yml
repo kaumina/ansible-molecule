@@ -1,0 +1,10 @@
+---
+# tasks file for install_nginx
+- name: Install nginx
+  package: name=nginx state=present
+
+- name: Install nginx  systemd script
+  copy: src=nginx.service dest=/etc/systemd/system/nginx.service mode=0755
+
+- name: Restart nginx service with daemon-reload to pick up systemd changes
+  systemd: state=restarted daemon_reload=yes name=nginx.service
