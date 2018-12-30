@@ -7,3 +7,4 @@
   roles:
     - install_tomcat
     - deploy_app
+    - install_nginx 
