@@ -8,11 +8,14 @@
 - name: Install nginx  systemd script
   copy: src=nginx.service dest=/etc/systemd/system/nginx.service mode=0755
 
+- name: Create tomcat directory
+  file: path=/etc/ssl/private/ owner=root group=root state=directory  mode=2774
+
 - name: Copy self signed key
-  copy: src=nginx-selfsigned.key dest=/etc/ssl/private/nginx-selfsigned.key mode=0644
+  copy: src=self-signed.key dest=/etc/ssl/private/self-signed.key mode=0644
   
 - name: Copy self signed certificate
-  copy: src=nginx-selfsigned.crt dest=/etc/ssl/certs/nginx-selfsigned.crt mode=0644
+  copy: src=self-signed.crt dest=/etc/ssl/certs/self-signed.crt mode=0644
   
 - name: Copy nginx proxy config
   copy: src=proxy.conf dest=/etc/nginx/conf.d/proxy.conf mode=0644  
@@ -20,5 +23,8 @@
 - name: Relead the config
   copy: src=proxy.conf dest=/etc/nginx/conf.d/proxy.conf mode=0644 
 
+- name: Set SELinux config
+  command: setsebool -P httpd_can_network_connect 1
+
 - name: Restart nginx service with daemon-reload to pick up systemd changes
-  systemd: state=restarted daemon_reload=yes name=nginx.service
+  systemd: state=restarted daemon_reload=yes name=nginx.service enabled=yes

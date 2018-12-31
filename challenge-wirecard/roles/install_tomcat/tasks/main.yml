@@ -32,4 +32,4 @@
   copy: src=tomcat.service dest=/etc/systemd/system/tomcat.service mode=0755
 
 - name: Restart tomcat service with daemon-reload to pick up config changes
-  systemd: state=restarted daemon_reload=yes name=tomcat.service
+  systemd: state=restarted daemon_reload=yes name=tomcat.service enabled=yes
