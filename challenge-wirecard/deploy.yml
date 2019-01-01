@@ -1,4 +1,4 @@
----
+--- # This is the main playbook yaml for prod and staging environment.
 - hosts: appservers
   remote_user: cloud_user
   become_user: root
@@ -8,3 +8,6 @@
     - install_tomcat
     - deploy_app
     - install_nginx 
+    - test_roles
+  vars:
+    - server_name: '13.52.99.197'
