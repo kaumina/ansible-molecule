@@ -1,5 +1,0 @@
---- # This is the main playbook yaml for prod and staging environment.
-- name: Installing Java, Tomcat and the application 
-- hosts: appservers
-#  roles:
-#    - install_java    
