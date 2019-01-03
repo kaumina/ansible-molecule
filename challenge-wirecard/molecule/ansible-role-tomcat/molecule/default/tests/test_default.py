@@ -12,3 +12,12 @@ def test_hosts_file(host):
     assert f.exists
     assert f.user == 'root'
     assert f.group == 'root'
+
+def test_nginx_server_is_installed(host):
+    nginx = host.package('tomcat')
+    assert nginx.is_installed
+
+def test_nginx_is_running(host):
+    nginx = host.service('tomcat')
+    assert nginx.is_running
+    assert nginx.is_enabled

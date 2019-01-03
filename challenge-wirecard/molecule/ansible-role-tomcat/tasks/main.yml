@@ -12,13 +12,13 @@
   become_method: sudo
 
 - name: Create tomcat directory
-  file: path=/opt/tomcat owner=tomcat group=tomcat state=directory  mode=2774
+  file: path=/opt/tomcat/apache-tomcat-8.5.35 owner=tomcat group=tomcat state=directory  mode=2774
 
 - name: Download Tomcat
   get_url: url=http://apache.mirrors.ionfish.org/tomcat/tomcat-8/v8.5.35/bin/apache-tomcat-8.5.35.tar.gz dest=/opt/tomcat/apache-tomcat-8.5.35.tar.gz
 
-- name: Extract archive
-  command: chdir=/tmp/ /bin/tar xvf /opt/tomcat/apache-tomcat-8.5.35.tar.gz -C /opt/tomcat creates=/opt/tomcat/apache-tomcat-8.5.35
+- name: Extract Tomcat archive
+  unarchive: src=/opt/tomcat/apache-tomcat-8.5.35.tar.gz dest=/opt/tomcat/ remote_src=yes
 
 - name: Symlink install directory
   file: src=/opt/tomcat/apache-tomcat-8.5.35 path=/opt/tomcat-current owner=tomcat group=tomcat state=link mode=2774

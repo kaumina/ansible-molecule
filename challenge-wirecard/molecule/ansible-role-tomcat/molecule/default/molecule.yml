@@ -20,7 +20,7 @@ platforms:
     command: /sbin/init
 provisioner:
   name: ansible
-  log: True
+  log: False
   lint:
     name: ansible-lint
 scenario:
