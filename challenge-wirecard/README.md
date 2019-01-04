@@ -14,6 +14,7 @@ You can find below molecule roles in **molecule** directory (**challenge/challen
 
 ## How to run and test Ansible roles
 I assume you have installed below tools and applications in your local/desktop server.
+
 **Pre-requisites:**
 
 1. Docker in your localhost.
@@ -21,54 +22,68 @@ I assume you have installed below tools and applications in your local/desktop s
 3. Install docker-py using pip.
         ```
         pip install docker-py
+
         ```
         
 4. git in your localhost.
 5. Firstly, you have to clone the repository and checkout the **Ansible** branch from BitBucket repo.
 
+       ```
         git clone git@bitbucket.org:codefreaker/challenge.git
         git fetch && git checkout ansible
         git pull
- 
+       ```
 
 6. Once you are done with all installations execute below commands sequentially assuming now you are here.
-	    ```
-	      challenge/challenge-wirecard/molecule 
-	    ```
+	  
+        ```
+	 challenge/challenge-wirecard/molecule 
+	
+        ```
         
     You can see there are two commands are running for running role task and testing them.
+
    **molecule check:** Dry run the all actions in the role.
    **molecule converge:** Run the all tasks written in tasks/main.yml
    **molecule verify:** Run the testing scripts (molecule/default/ using **testinfra** 
 
     1. Execute below to install and config Tomcat.
+
         ```
          cd ansible-role-tomcat
          molecule check
          molecule converge
          molecule verify 
+
         ```
        You can see molecule executes all role tasks 
 
     2. Execute below to install and config Nginx with self signed SSL certificate.
+
         ``` 
          cd ansible-role-nginx
          molecule check
          molecule converge 
          molecule verify 
+
        ```
+
     3. This execution will install the application and restart the Tomcat.
+
         ``` 
          cd ansible-role-tomcat
          molecule check
          molecule converge 
          molecule verify 
+
        ```
                  
     4. Now you run below command in your host server. 
-                ```
-                curl -vk https://172.17.0.2 
-                ```
+
+       ```
+         curl -vk https://172.17.0.2 
+ 
+       ```
 
     Expected output:
 
