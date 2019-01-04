@@ -1,6 +1,6 @@
 # Test Ansible roles using Molecule
 This is the how to guide for deploying devopschallenge.war in a Tomcat container with a self signed SSL Nginx reverse proxy.
-## Introduction
+# Introduction
 There are three roles defined here and they are intended to install OpenJDK,Apache Tomcat, and Nginx. These roles are supposed to work on CenOS 7 as the testing Docker image is CentOs. Further, You may find the self signed certificates in **ansible-role-nginx/files** directory
 This has been implemented in [Molecule] (https://molecule.readthedocs.io/en/latest/) .
 
@@ -12,65 +12,72 @@ You can find below molecule roles in **molecule** directory (**challenge/challen
   - **ansible-role-nginx:** This installs and configures reverse proxy with self signed SSL. At this moment Nginx version 1.12.2 is availble in the repos and installed.
   - **ansible-role-deployapp:** Deploys the **devopschallenge.war**	into newly build Apache Tomcat instance and restart the service.
 
-## How to run and test Ansible roles
+# How to run and test Ansible roles
+
 I assume you have installed below tools and applications in your local/desktop server.
 
-**Pre-requisites:**
+## Pre-requisites:
 
 1. Docker in your localhost.
 2. Molecule in your localhost. [https://molecule.readthedocs.io/en/latest/installation.html]
 3. Install docker-py using pip.
+
+    ```
+     pip install docker-py
+    ```    
     
-       pip install docker-py
-        
 4. git in your localhost.
-5. Firstly, you have to clone the repository and checkout the **Ansible** branch from BitBucket repo.
+5. Once you are done with all installations execute below commands sequentially assuming now you are here.
+    ``` 
+    challenge/challenge-wirecard/molecule 
+    ```
 
-        git clone git@bitbucket.org:codefreaker/challenge.git
-        git fetch && git checkout ansible
-        git pull
- 
+## Steps:  
 
-6. Once you are done with all installations execute below commands sequentially assuming now you are here.
+1. Firstly, you have to clone the repository and checkout the **Ansible** branch from BitBucket repo.
+    ```
+   git clone git@bitbucket.org:codefreaker/challenge.git
+   git fetch && git checkout ansible
+   git pull
+    ```
+You can see there are two commands are running for running role task and testing them.
+    
+   * **molecule check:** Dry run the all actions in the role.
+   * **molecule converge:** Run the all tasks written in tasks/main.yml
+   * **molecule verify:** Run the testing scripts (molecule/default/ using **testinfra** 
 
-	   challenge/challenge-wirecard/molecule 
+2. Execute below to install and config Tomcat.  
+    
+    ```
+    cd ansible-role-tomcat
+    molecule check
+    molecule converge
+    molecule verify 
+    ```
+You can see molecule executes all role tasks 
 
-        
-    You can see there are two commands are running for running role task and testing them.
-   **molecule check:** Dry run the all actions in the role.
-   **molecule converge:** Run the all tasks written in tasks/main.yml
-   **molecule verify:** Run the testing scripts (molecule/default/ using **testinfra** 
+3. Execute below to install and config Nginx with self signed SSL certificate.
+    ``` 
+    cd ansible-role-nginx
+    molecule check
+    molecule converge 
+    molecule verify          
+    ```
+4.  This execution will install the application and restart the Tomcat.
+    ``` 
+    cd ansible-role-tomcat
+    molecule check
+    molecule converge 
+    molecule verify       
+    ```
 
-    1. Execute below to install and config Tomcat.
-       ```
-         cd ansible-role-tomcat
-         molecule check
-         molecule converge
-         molecule verify 
-       ```
-       You can see molecule executes all role tasks 
-
-    2. Execute below to install and config Nginx with self signed SSL certificate.
-        ``` 
-         cd ansible-role-nginx
-         molecule check
-         molecule converge 
-         molecule verify 
-       ```
-    3. This execution will install the application and restart the Tomcat.
-        ``` 
-         cd ansible-role-tomcat
-         molecule check
-         molecule converge 
-         molecule verify 
-       ```
-                 
-    4. Now you run below command in your host server. 
-                ```
-                curl -vk https://172.17.0.2 
-                ```
+5.  Now you run below command in your host server. 
+    ```
+    curl -vk https://172.17.0.2 
+    ```
 
     Expected output:
+    
 ```
         
         * About to connect() to 172.17.0.2 port 443 (#0)
@@ -99,10 +106,4 @@ I assume you have installed below tools and applications in your local/desktop s
         < 
         * Connection #0 to host 172.17.0.2 left intact
         Hello from Wirecard DevOps Challenge!!
- ```       
-      
-
-
-
-
-
+ ```
