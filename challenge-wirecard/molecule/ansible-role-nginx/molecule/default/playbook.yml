@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: ansible-role-nginx
+  vars:
+    - server_name: '172.17.0.2'
