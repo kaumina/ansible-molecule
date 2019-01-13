@@ -1,62 +1,121 @@
-# Challenge Wirecard
+# Test Ansible roles using Molecule
+This is the how to guide for deploying devopschallenge.war in a Tomcat container with a self signed SSL Nginx reverse proxy.
+# Introduction
+There are three roles defined here and they are intended to install OpenJDK,Apache Tomcat, and Nginx. These roles are supposed to work on CenOS 7 as the testing Docker image is CentOs. Further, You may find the self signed certificates in **ansible-role-nginx/files** directory
+This has been implemented in [Molecule] (https://molecule.readthedocs.io/en/latest/).
 
-The challenge objective is to evaluate your logic and capacity to use one of the major configuration management tools.
-The task objective is to have a web application deployed using Infrastructure as Code backed by a Reverse Proxy running secured by SSL.
+# Directory hierarchy for Molecule roles
 
-The test gives you a WAR file containing a web application as the following image:
+You can find below molecule roles in **molecule** directory (**challenge/challenge-wirecard/molecule**).
 
-![Example: Running Application](https://bitbucket.org/wirecard_sre_recruitment/challenge/raw/master/PageScreenshot.png)
+  - **ansible-role-tomcat:** This role installs OpenJDK 1.8 and Apache Tomcat 8. Furthermore, Tomcat  is 			configured to run default  port including systemd service.
+  - **ansible-role-nginx:** This installs and configures reverse proxy with self signed SSL. At this moment Nginx version 1.12.2 is availble in the repos and installed.
+  - **ansible-role-deployapp:** Deploys the **devopschallenge.war**	into newly build Apache Tomcat instance and restart the service.
 
-To deploy the application you can select one of these options:
+# How to run and test Ansible roles
 
-1. Ansible
-2. Puppet
-3. Chef
+I assume you have installed below tools and applications in your local/desktop server.
 
-You should be able to:
+## Pre-requisites:
 
-1. Spin up a WebServer of your choice
-2. Deploy the WAR file located in the directory assets named devopschallenge.war
-3. Manage and Install a Reverse Proxy with SSL;
-4. Write Unit and Integration Tests
- 
-The evaluator will check out your repository and will review:
+1. Docker in your localhost.
+2. Molecule in your localhost. [https://molecule.readthedocs.io/en/latest/installation.html]
+3. Install docker-py using pip.
 
-1. Code design
-2. Best practices
-3. Outcomes achievement
-4. Your tests
+    ```
+     pip install docker-py
+    ```    
+    
+4. git in your localhost.
+5. Once you are done with all installations execute below commands sequentially assuming now you are here.
+    ``` 
+    challenge/challenge-wirecard/molecule 
+    ```
+    
+## Steps:  
 
-The evaluator will execute your code and it should be able to see a web application running,
+1.Firstly, you have to clone the repository and checkout the **Ansible** branch from BitBucket repo.
+   
+```
 
-Requirements
-------------
-The test page should be accessed through this address:
+  git clone git@bitbucket.org:codefreaker/challenge.git
+  git fetch && git checkout ansible
+  git pull
 
-https://<host>/hello
+```
+   
+You can see there are two commands are running for running role task and testing them.
+    
+   * **molecule check:** Dry run the all actions in the role.
+   * **molecule converge:** Run the all tasks written in tasks/main.yml
+   * **molecule verify:** Run the testing scripts (molecule/default/ using **testinfra**     
+   
 
-The server certificate can be Self Signed,
-Tests should show that this page is reachable, you should provide a way to test your code: `kitchen`, `molecule`, `vagrant`, `docker`...
+2.Execute below to install and config Tomcat.  
+    
+```
 
-Test Directions
-----------------
-There is one branch for each configuration management tool.
+  cd ansible-role-tomcat
+  molecule check
+  molecule converge
+  molecule verify 
+  
+```
 
-If you want to use ansible, for example, use the branch ansible: `git checkout ansible`
+You can see molecule executes all role tasks 
 
-You should write all of your code inside the folder `challenge-wirecard`.
+3.Execute below to install and config Nginx with self signed SSL certificate.
 
-## Delivery Instructions
-1. You must create your own BitBucket username, if you don't have one. A free BitBucket account can be created at http://bitbucket.org
-2. You must fork the https://bitbucket.org/wirecard_sre_recruitment/challenge repository into a private repository on your own account and push your code in the config management branch you've picked.
-3. Write all documentation and instructions to run the tests in the file challenge-wirecard/README.md
-4. Once finished, you must give the user **wirecard_sre_recruitment** read permission on your repository and we can evaluate your code.
+``` 
+  cd ansible-role-nginx
+  molecule check
+  molecule converge 
+  molecule verify          
+```
+4.This execution will install the application and restart the Tomcat.
+   
+``` 
+  cd ansible-role-tomcat
+  molecule check
+  molecule converge 
+  molecule verify       
+```
 
+5.Now you run below command in your host server. 
 
-## Format
-* You must be prepared to walk an evaluator through all the created artifacts including tests, logic used, chosen tools.
-* Mention anything that was asked but not delivered and why, and any additional comments.
-* Any questions, please send an email to **sre.recruitment@wirecard.com**
+```
+curl -vk https://172.17.0.2 
+```
 
-Thank you,
-The Wirecard Recruiting Team
+Expected output:
+    
+
+        
+        * About to connect() to 172.17.0.2 port 443 (#0)
+        *   Trying 172.17.0.2...
+        * Connected to 172.17.0.2 (172.17.0.2) port 443 (#0)
+        * Initializing NSS with certpath: sql:/etc/pki/nssdb
+        * skipping SSL peer certificate verification
+        * SSL connection using TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        * Server certificate:
+        *       subject: E=kaumina@gmail.com,CN=localhost,OU=DevOps,O=Default Company Ltd,L=Colombo,ST=Western,C=LK
+        *       start date: Dec 31 01:59:12 2018 GMT
+        *       expire date: Dec 31 01:59:12 2019 GMT
+        *       common name: localhost
+        *       issuer: E=kaumina@gmail.com,CN=localhost,OU=DevOps,O=Default Company Ltd,L=Colombo,ST=Western,C=LK
+        > GET / HTTP/1.1
+        > User-Agent: curl/7.29.0
+        > Host: 172.17.0.2
+        > Accept: */*
+        > 
+        < HTTP/1.1 200 
+        < Server: nginx/1.12.2
+        < Date: Fri, 04 Jan 2019 06:06:04 GMT
+        < Content-Type: text/plain;charset=UTF-8
+        < Content-Length: 38
+        < Connection: keep-alive
+        < 
+        * Connection #0 to host 172.17.0.2 left intact
+        Hello from Wirecard DevOps Challenge!!
+     
+      
