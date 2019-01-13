@@ -3,8 +3,8 @@
 
 - name: Copy application war file to remote app server and keep a backup on existing
   copy:
-    src: ../../../../assets/devopschallenge.war
-    dest: /opt/tomcat-current/webapps/devopschallenge.war
+    src: ../../../wars/sample.war
+    dest: /opt/tomcat-current/webapps/sample.war
     owner: tomcat
     group: tomcat
     mode: 0644
