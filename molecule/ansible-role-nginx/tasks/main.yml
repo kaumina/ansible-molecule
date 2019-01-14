@@ -1,7 +1,6 @@
 ---
 # tasks file for install_nginx
 
-
 - name: Install nginx
   package: name=nginx state=present
 
@@ -16,9 +15,6 @@
   
 - name: Copy self signed certificate
   copy: src=self-signed.crt dest=/etc/ssl/certs/self-signed.crt mode=0644
-  
-#- name: Copy nginx proxy config
-#  copy: src=proxy.conf dest=/etc/nginx/conf.d/proxy.conf mode=0644  
 
 - name: Copy j2 file to server
   template: src=proxy.j2 dest=/etc/nginx/conf.d/proxy.conf mode=0644 
