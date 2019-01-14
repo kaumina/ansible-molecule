@@ -7,7 +7,7 @@ lint:
   name: yamllint
 platforms:
   - name: instance
-    image: jsmigel/centos-epel
+    image: kaumina/centos7-epel:latest
     privileged: True
     volume_mounts:
       - "/sys/fs/cgroup:/sys/fs/cgroup:rw"
