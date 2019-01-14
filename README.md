@@ -8,9 +8,9 @@ This has been implemented in [Molecule] (https://molecule.readthedocs.io/en/late
 
 You can find below molecule roles in **molecule** directory (**challenge/challenge-wirecard/molecule**).
 
-  - **ansible-role-tomcat:** This role installs OpenJDK 1.8 and Apache Tomcat 8. Furthermore, Tomcat  is 			configured to run default  port including systemd service.
+  - **ansible-role-tomcat:** This role installs OpenJDK 1.8 and Apache Tomcat 8. Furthermore, Tomcat is configured to run default  port including systemd service.
   - **ansible-role-nginx:** This installs and configures reverse proxy with self signed SSL. At this moment Nginx version 1.12.2 is availble in the repos and installed.
-  - **ansible-role-deployapp:** Deploys the **devopschallenge.war**	into newly build Apache Tomcat instance and restart the service.
+  - **ansible-role-deployapp:** Deploys the **sample.war**	into newly build Apache Tomcat instance and restart the service.
 
 # How to run and test Ansible roles
 
@@ -29,19 +29,17 @@ I assume you have installed below tools and applications in your local/desktop s
 4. git in your localhost.
 5. Once you are done with all installations execute below commands sequentially assuming now you are here.
     ``` 
-    challenge/challenge-wirecard/molecule 
+    ansible-molecule/molecule 
     ```
     
 ## Steps:  
 
-1.Firstly, you have to clone the repository and checkout the **Ansible** branch from BitBucket repo.
+1.Firstly, you have to clone the repository from BitBucket repo.
    
 ```
 
-  git clone git@bitbucket.org:codefreaker/challenge.git
-  git fetch && git checkout ansible
-  git pull
-
+  git clone git@bitbucket.org:codefreaker/ansible-molecule.git
+  
 ```
    
 You can see there are two commands are running for running role task and testing them.
@@ -88,34 +86,31 @@ curl -vk https://172.17.0.2
 ```
 
 Expected output:
-    
 
-        
-        * About to connect() to 172.17.0.2 port 443 (#0)
-        *   Trying 172.17.0.2...
-        * Connected to 172.17.0.2 (172.17.0.2) port 443 (#0)
-        * Initializing NSS with certpath: sql:/etc/pki/nssdb
-        * skipping SSL peer certificate verification
-        * SSL connection using TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        * Server certificate:
-        *       subject: E=kaumina@gmail.com,CN=localhost,OU=DevOps,O=Default Company Ltd,L=Colombo,ST=Western,C=LK
-        *       start date: Dec 31 01:59:12 2018 GMT
-        *       expire date: Dec 31 01:59:12 2019 GMT
-        *       common name: localhost
-        *       issuer: E=kaumina@gmail.com,CN=localhost,OU=DevOps,O=Default Company Ltd,L=Colombo,ST=Western,C=LK
-        > GET / HTTP/1.1
-        > User-Agent: curl/7.29.0
-        > Host: 172.17.0.2
-        > Accept: */*
-        > 
-        < HTTP/1.1 200 
-        < Server: nginx/1.12.2
-        < Date: Fri, 04 Jan 2019 06:06:04 GMT
-        < Content-Type: text/plain;charset=UTF-8
-        < Content-Length: 38
-        < Connection: keep-alive
-        < 
-        * Connection #0 to host 172.17.0.2 left intact
-        Hello from Wirecard DevOps Challenge!!
+	<html>
+	<head>
+	<title>Sample "Hello, World" Application</title>
+	</head>
+	<body bgcolor=white>
+	<table border="0">
+	<tr>
+	<td>
+	<img src="images/tomcat.gif">
+	</td>
+	<td>
+	<h1>Sample "Hello, World" Application</h1>
+	<p>This is the home page for a sample application used to illustrate the
+	source directory organization of a web application utilizing the principles
+	outlined in the Application Developer's Guide.
+	</td>
+	</tr>
+	</table>
+	<p>To prove that they work, you can execute either of the following links:
+	<ul>
+	<li>To a <a href="hello.jsp">JSP page</a>.
+	<li>To a <a href="hello">servlet</a>.
+	</ul>
+	</body>
+	</html>
      
       
