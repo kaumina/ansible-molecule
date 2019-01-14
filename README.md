@@ -1,7 +1,7 @@
 # Test Ansible roles using Molecule
 This is the how to guide for deploying sample.war in a Tomcat container with a self signed SSL Nginx reverse proxy.
 # Introduction
-There are three roles defined here and they are intended to install OpenJDK,Apache Tomcat, and Nginx. These roles are supposed to work on CenOS 7 as the testing Docker image is CentOs. Further, You may find the self signed certificates in **ansible-role-nginx/files** directory
+There are three roles defined here and they are intended to install OpenJDK,Apache Tomcat, and Nginx. These roles are supposed to work on CentOS 7 and tested using CentOS7 Docker image. Further, You may find the self signed certificates in **ansible-role-nginx/files** directory
 This has been implemented in [Molecule] (https://molecule.readthedocs.io/en/latest/).
 
 # Directory hierarchy for Molecule roles
