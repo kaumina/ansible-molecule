@@ -19,5 +19,5 @@ def test_hosts_file(host):
 
 def test_request_response():
     # Send a request to the API server and store the response.
-    response = requests.get('https://172.17.0.2', verify=False)
+    response = requests.get('https://172.17.0.2/sample/', verify=False)
     assert response.status_code == 200
