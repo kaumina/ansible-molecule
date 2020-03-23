@@ -34,7 +34,7 @@ I assume you have installed below tools and applications in your local/desktop s
     
 ## Steps:  
 
-1.Firstly, you have to clone the repository from BitBucket repo.
+1.Firstly, you have to clone the repository from GitHub repo.
    
 ```
 
